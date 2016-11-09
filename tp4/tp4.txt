@@ -1,0 +1,8 @@
+1. insererElements() => déclenché avec onload="insererElements(); sur le body
+2. les éléments sont afficher grâce à la création d'élément
+    puis de l'attribution de valeur
+    et pour finir de l'ajout de ces dernier
+3. Modifier le innerHTML => modifie le contenue. L'objet étant déjà créer. Il connait déjà l'emplacement
+
+1. TableauDeParagraphe permet de générer un tableau de paragraphe répertoriant tout les paragraphes.
+2. addListener permet d'ajouter une écoute sur c'est objet pour un évènement en particulier. (ici mouseover).

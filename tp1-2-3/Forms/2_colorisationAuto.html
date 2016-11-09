@@ -1,0 +1,108 @@
+<html>
+	<head>
+		<title>ColorisationAuto</title>
+		<style type="text/css">
+			#entete {
+				width:100%;
+				background-color:#E0E0FF;
+				color : #3F43E1;
+				text-align:justify;
+				margin-left:15px;
+				margin-top:15px;
+				margin-right:15px;
+				padding-bottom:15px;
+			}
+			article {
+				margin-left:15px;
+			}
+			/*	Les paragraphes de la section corps qui ont un attribut "survol" valant "true" ont
+				une couleur de fond jaune */
+			#corps p[survol=true] {
+				background-color:yellow;
+			}
+		</style>
+		<script type="text/javascript">
+
+			function initialiser() {
+				var tableauDeParagraphes = document.getElementsByTagName("p");
+				for (var i=0; i<tableauDeParagraphes.length;i++) {
+					tableauDeParagraphes[i].addEventListener("mouseenter", survoler, false);
+					tableauDeParagraphes[i].addEventListener("mouseleave", desurvoler, false);
+				}
+			}
+			// Au mouseenter, on affecte l'attribut survol du paragraphe � la valeur true
+			function survoler() {
+				this.setAttribute("survol", "true");
+			}
+			// Au mouseleave, on affecte l'attribut survol du paragraphe � la valeur false
+			function desurvoler() {
+				this.setAttribute("survol", "false");
+			}
+		</script>
+	</head>
+	<body onload="initialiser();">
+		<div id="entete">
+			<div id="explication">
+				Cette page pr�sente une fa�on simple de coloriser un �l�ment
+				au survol de la souris. Plut�t que de manipuler le style
+				ou d'ajouter/enlever des classes sur les �l�ments, on utilise
+				la capacit� de CSS3 � appliquer des r�gles selon les valeurs
+				d'attributs : lorsque la souris entre dans un paragraphe, on
+				d�finit un attribut "survol" et on lui affecte la valeur "true".
+				CSS applique alors la r�gle p[survol=true]. Lorsque la souris
+				quitte le paragraphe, on modifie la valeur de l'attribut survol
+				et on lui affecte false. CSS cesse alors d'appliquer la r�gle
+				p[survol=true].
+			</div>
+		</div>
+		<article>
+			<h1>Le grand bleu a chaud</h1>
+
+			<section id="corps">
+				<p>Le r�chauffement des oc�ans, r�sultat direct des �missions de CO2, constitue une menace
+					�cologique majeure largement incomprise et ignor�e. L�Union internationale pour la conservation
+					de la nature (UICN) vient de publier un rapport r�dig� par 80 scientifiques originaires d�une
+					douzaine de pays sur ce ph�nom�ne complexe. Ils alertent sur les cons�quences en cha�ne de ce
+					r�chauffement sur les esp�ces animales, v�g�tales et, pour finir, sur l�homme, qui pourraient
+					s�av�rer colossales sans baisse rapide et drastique de notre recours au p�trole, au charbon et au gaz.</p>
+
+				<p>JLes oc�ans agissent comme un �norme �?amortisseur?� climatique. Ils ont absorb� 93?% du
+					r�chauffement d� � l�homme depuis les ann�es 1970, indique Dan Laffoley, l�un des principaux
+					auteurs de l��tude. Sans les mers, les temp�ratures terrestres auraient litt�ralement explos�.
+					Le probl�me est que cela a un co�t. Le r�chauffement des oc�ans, qui pourrait encore gagner 1?�C
+					� 4?�C en moyenne d�ici � la fin du si�cle, affecte tous les �cosyst�mes marins et c�tiers.</p>
+
+				<p>Des groupes entiers d�esp�ces de poissons, mammif�res marins, planctons, m�duses, tortues et
+					oiseaux de mer migrent vers les eaux plus froides des p�les. Ces d�placements, qui peuvent
+					d�j� atteindre 10 degr�s de latitude, affectent les capacit�s de reproduction de ces esp�ces,
+					notamment en raison de la baisse des stocks de nourriture.</p>
+
+				<p>Ils vont �galement frapper les p�cheurs avec la rar�faction des prises dans les eaux temp�r�es
+					et tropicales. En Asie du Sud-Est, dont la s�curit� alimentaire repose en grande partie sur le
+					poisson, les captures pourraient diminuer de 10?% � 30?% en 2050 par rapport aux ann�es 1970-2000.
+					Les p�cheries pourraient �tre en outre touch�es par le ph�nom�ne de l�acidification des oc�ans,
+					li� � l�absorption du CO2 atmosph�rique. Ce probl�me ne touche pas seulement les massifs coralliens?:
+					il va tout autant r�duire les capacit�s de calcification des coquillages et des vert�br�s, et donc
+					leur d�veloppement biologique. Des eaux plus chaudes pourraient �galement favoriser des agents
+					pathog�nes, comme la bact�rie porteuse du chol�ra.</p>
+
+				<h2>Bombes � retardement</h2>
+
+				<p>Au niveau des menaces sur les zones c�ti�res, l��l�vation du niveau de la mer (effet combin� de
+					la fonte des glaces et de la dilatation des oc�ans du fait de leur r�chauffement) est une
+					menace parmi d�autres. Le r�chauffement oc�anique entra�ne une fr�quence accrue des
+					ouragans et une intensification des ph�nom�nes El Ni�o, synonymes de graves s�cheresses.
+					Il modifie le r�gime des pluies, avec une r�gression des pr�cipitations dans les r�gions
+					sous-tropicales et une augmentation sous les latitudes moyennes et dans les zones de mousson.
+					Il affectera les syst�mes agricoles.</p>
+
+				<p>Autre bombe � retardement?: les hydrates de m�thane pr�sents dans les grands fonds des oc�ans.
+					S�ils venaient � d�geler, cela lib�rerait des quantit�s astronomiques de m�thane, un puissant
+					gaz � effet de serre. Si l�humanit� ne r�duit pas rapidement ses �missions, elle ne subira pas
+					seulement la hausse des temp�ratures sur la terre, elle aura �galement � affronter la revanche des mers.</p>
+
+					<p>Antoine de Ravignan</p>
+			</section>
+		</article>
+	</body>
+</html>

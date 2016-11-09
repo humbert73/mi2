@@ -1,0 +1,19 @@
+Question 1
+2.1
+  <article> : un article représente un article
+  <section> : une section représente une section d'un article (avec sont propre header)
+2.2
+  <h1> est la balise pour le titre principal
+  <h2> est la balise pour les titre de second niveau/le sous titres (plus petit)
+  <h3> est la balise pour les titre de 3e niveau/les sous sous titres (encore plus petit)
+2.3
+  <p> pour les paragraphe
+  <ul> pour les listes à puces
+  <li> pour les éléments d'une liste
+2.4
+  <article> utilisé pour séparer du contenue ayant un sujet différent du reste de la page.
+  <div> est une simple division d'une partie quand le contenue est générique.
+2.5
+  6 imbriquation max dans ce document.
+
+Question 2

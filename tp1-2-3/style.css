@@ -1,0 +1,33 @@
+body {
+	color : blue ;
+}
+header {
+	color : violet ;
+	text-align : center ;
+}
+.titre1 {
+	margin-top : 19px;
+	margin-bottom : 19px;
+	font-weight : 900 ;
+	font-size : 1.6em;
+}
+.detail {
+	column-count : 3 ;
+	 -moz-column-count: 3;
+	 -webkit-column-count: 3;
+
+	column-gap : 2em;
+		-moz-column-gap: 2em;
+	-webkit-column-gap: 40px;
+
+	-webkit-column-rule: 4px outset #ff00ff; /* Chrome, Safari, Opera */
+  -moz-column-rule: 4px outset #ff00ff; /* Firefox */
+  column-rule: 4px outset #ff00ff;
+}
+.detail p::first-letter {
+	font-size : 300%;
+	color : black ;
+	font-weight : 900;
+	font-family : cursive;
+	float : left;
+}

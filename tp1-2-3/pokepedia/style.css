@@ -1,0 +1,259 @@
+/*Gestion général*/
+body {
+    background-color: whitesmoke;
+    font-family: Arial, sans-serif;
+}
+
+body > header {
+    margin-top: 50px;
+    text-align: center;
+}
+
+header {
+    margin-bottom: 10px;
+}
+
+/*Gestion des Titre*/
+h4 {
+    margin: 0;
+    padding-right: 10px;
+}
+
+/*Gestion du menu*/
+nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    justify-content: space-between;
+    align-items: stretch;
+    width: 100%;
+    border-top: solid 1px lightgrey;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav div {
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+    text-align: center;
+    border-bottom: solid 1px lightgrey;
+    background-color: white;
+}
+
+nav div:first-child {
+    /*border-left: solid 1px lightgrey;*/
+}
+
+nav div:last-child {
+    /*border-right: solid 1px lightgrey;*/
+}
+
+.menuItem ul {
+    display: none;
+}
+
+.menuItem:hover ul {
+    display: block;
+    margin: 0
+}
+
+.menuItem:hover li {
+    border-left: solid 1px lightgrey;
+}
+
+/*Gestion des articles et des asides*/
+section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+aside {
+    width: 100%;
+    justify-content: space-between;
+}
+
+aside div {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 20px;
+}
+
+#tabArticles article {
+    width: 300px;
+}
+
+article, aside {
+    margin: 10px;
+    padding: 10px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    background-color: white;
+    box-shadow: 1px 1px 1px lightgrey;
+    border: solid 1px lightgrey;
+    border-radius: 1px;
+}
+
+article > header, aside > header {
+    border-bottom: solid 1px lightgrey;
+}
+
+
+/*Gestion des asides qui contienne des listes d'informations*/
+.aside-list > ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.aside-list div {
+    margin: 0 0 30px 0;
+}
+
+.aside-list > ul > li {
+    display: inline-block;
+    width: 300px;
+    margin: 0;
+}
+
+.aside-list p, .aside-list > ul > li > div > img {
+    /* alignement avec les puste des autres éléments */
+    margin: 0 0 0 20px;
+}
+
+.col-left {
+    text-align: end;
+    width: 40%;
+}
+
+.col-right {
+    width: 50%;
+}
+
+#caracteristique > ul > li {
+    padding-top: 10px;
+    vertical-align: top;
+    height: 50px;
+    border: solid 1px lightgrey;
+    margin-bottom: 5px;
+}
+
+/*Spécial smartphone / Tablette */
+@media only screen and (max-width: 600px) {
+
+    /*taille des images*/
+    #main-image {
+        width: 150px;
+        height: 150px;
+    }
+
+    aside img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .pokemon-type {
+        width: 60px;
+        height: 20px;
+    }
+
+    /*Gestion affichage en colonne de aside-list*/
+    aside {
+        width: 300px;
+    }
+
+    .aside-list > ul {
+        /*display: inline;*/
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .aside-list > ul > li {
+        margin-top: 30px;
+    }
+
+    .aside-list div {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .col-left {
+        text-align: end;
+        width: 40%;
+    }
+
+    .col-right {
+        width: 50%;
+    }
+
+    #caracteristique .col-right {
+        text-align: left;
+    }
+
+    #caracteristique .col-left {
+        width: 30%;
+    }
+
+    #caracteristique > ul > li {
+        border-bottom: none;
+        border-bottom: solid 1px lightgrey;
+        margin-bottom: 0;
+    }
+}
+
+/*Spécial impression*/
+@media print {
+    nav {
+        display: none;
+    }
+
+    body > header {
+        margin-top: 0;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    h4 {
+        font-size: 12px;
+    }
+
+    article, aside {
+        margin: 0;
+        padding: 0;
+    }
+
+    aside {
+        width: 33%;
+    }
+
+    img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .pokemon-type {
+        width: 50px;
+        height: 15px;
+    }
+
+    .aside-list > ul > li {
+        display: inline-block;
+        width: 250px;
+        margin: 0;
+    }
+
+    #caracteristique .col-left {
+        width: 60px;
+    }
+
+    #caracteristique > ul > li {
+        border: none;
+        border-bottom: solid 1px lightgrey;
+    }
+}

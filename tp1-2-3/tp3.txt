@@ -1,0 +1,39 @@
+Partie 1
+
+1. la balise <style> permet d'insérer des règle de CSS.
+Ces règles se traduise par une modification d'élément (ex: header)
+auquel on change ou ajoutes des attributs. (ex: color : violet)
+2. Car le titre est définit dans une balise <header>.
+3. Titre1 -> 				margin-top : 19px;
+				margin-bottom : 19px;
+				font-weight : 900 ;
+				font-size : 1.6em;
+
+        Titre 2 Color blue.
+4. <h1> <div class="titre1">
+Dans un premier cas le style est appliqué sur une balise qui est dédié au titre
+Dans un deuxième cas le style est appliqué sur une balise div défini par une classe titre.
+Le Premier choix est le plus logique car la balise <h1> est faite pour déterminé les titres.
+Cela permet de garder une bonne sémantique du site.
+
+5.
+column-count -> nombre de colonnes
+column-gap -> espacement entre chaque colonnes
+column-rule -> règle appliqué sur les colonnes
+
+-moz -> Mozilla
+-webkit -> Chrome, Safari, Opera
+Sans spécification -> valeur par défaut pour les autres navigateurs.
+
+6. La première lettre est modifier grâce au règle css suivante
+			.detail p::first-letter {
+				font-size : 300%;
+				color : black ;
+				font-weight : 900;
+				font-family : cursive;
+				float : left;
+			}
+
+      pour décalé la première lettre vers la droite il faudrait rajouté un "margin-left".
+
+7. Permet de séparer l'affichage du contenue et de la structure.

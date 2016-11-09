@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<title>ColorisationAuto</title>
+		<style type="text/css">
+			#entete {
+				width:100%;
+				background-color:#E0E0FF;
+				color : #3F43E1;
+				text-align:justify;
+				margin-left:15px;
+				margin-top:15px;
+				margin-right:15px;
+				padding-bottom:15px;
+			}
+			article {
+				margin-left:15px;
+			}
+			/*	Les paragraphes de la section corps qui ont un attribut "survol" valant "true" ont
+				une couleur de fond jaune */
+			#corps p[survol=true] {
+				background-color:yellow;
+			}
+		</style>
+		<script type="text/javascript">
+			function insererElements() {
+				console.log('insererElements') ;
+				var article = document.getElementsByTagName("article")[0];
+
+				var titre = document.createElement("h1");
+				titre.innerHTML = "Mon exemple d'insertion" ;
+				article.appendChild(titre);
+
+				var paragraphe = document.createElement("p");
+				paragraphe.innerHTML = "Pour insérer ce texte, je fais... Ah ben non, c'est à vous de le dire !" ;
+				article.appendChild(paragraphe);
+
+				alert("Regardez la page") ;
+				titre.innerHTML = "Au fait, je peux aussi faire des modifications d'objets" ;
+			}
+		</script>
+	</head>
+	<body onload="insererElements();">
+		<article>
+		</article>
+	</body>
+</html>
