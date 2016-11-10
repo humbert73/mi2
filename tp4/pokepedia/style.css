@@ -20,11 +20,24 @@ h4 {
 }
 
 /*Gestion du menu*/
+#menu-fictif { /* bar blanche du menu*/
+    z-index: 0;
+    left: 0;
+    top: 0;
+    position: fixed;
+    background-color: white;
+    width: 100%;
+    padding: 10px;
+    border-bottom: solid 1px lightgrey;
+}
+
 nav {
+    z-index: 1;
     position: fixed;
     left: 0;
     top: 0;
     justify-content: space-between;
+    text-align: center;
     align-items: stretch;
     width: 100%;
     border-top: solid 1px lightgrey;
@@ -38,31 +51,24 @@ nav ul {
 nav div {
     display: inline-block;
     vertical-align: top;
-    width: 50%;
+    width: 150px;
     text-align: center;
-    border-bottom: solid 1px lightgrey;
+    border-bottom: solid 1px white;
     background-color: white;
-}
-
-nav div:first-child {
-    /*border-left: solid 1px lightgrey;*/
-}
-
-nav div:last-child {
-    /*border-right: solid 1px lightgrey;*/
+    margin : 0 10px 0 10px;
 }
 
 .menuItem ul {
+    margin: 1px 0 0 0;
+    padding-bottom: 5px;
+    width: 148px; /* nav div width en comptant le border de 1px */
     display: none;
+    border: solid 1px lightgrey;
+    border-top: none;
 }
 
 .menuItem:hover ul {
     display: block;
-    margin: 0
-}
-
-.menuItem:hover li {
-    border-left: solid 1px lightgrey;
 }
 
 /*Gestion des articles et des asides*/
