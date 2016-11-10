@@ -3,15 +3,13 @@ function init() {
 
     initMenu(pokemons);
     initIndexPokemonsArticles(pokemons);
+    initPokemonsArticles(pokemons);
 }
 
-function initPokemon() {
-    var pokemons = getPokemons();
-    var url = window.location.search;
-    var numero = parseInt(url.substring(url.lastIndexOf("=") + 1));
-
-    initMenu(pokemons);
-    initPokemonArticle(pokemons[numero - 1]);
+function initPokemonsArticles(pokemons) {
+    for(num_pokemon  in pokemons) {
+        initPokemonArticle(pokemons[num_pokemon]);
+    }
 }
 
 function initMenu(pokemons) {
@@ -27,7 +25,7 @@ function initMenu(pokemons) {
 }
 
 function initPokemonArticle(pokemon) {
-    var section = document.getElementsByTagName("section")[0];
+    var section = document.getElementById("pokemon-articles");
     var article = createIndexPokemonArticle(pokemon);
     var articleSection = createArticleSection(pokemon);
     article.appendChild(articleSection);
@@ -37,11 +35,11 @@ function initPokemonArticle(pokemon) {
 
 function createPokemonLiForMenu(pokemon) {
     var li = document.createElement("li");
-    var a = document.createElement("a");
-    a.href = encodeURI("pokemon.html?num=" + pokemon.numero);
-    a.innerHTML = pokemon.nom;
-    // a.onclick = window.open('www.yourdomain.com', '_blank');
-    li.appendChild(a);
+    // var a = document.createElement("a");
+    // a.href = encodeURI("pokemon.html?num=" + pokemon.numero);
+    // a.innerHTML = pokemon.nom;
+    // li.appendChild(a);
+    li.innerHTML = pokemon.nom;
 
     return li;
 }
