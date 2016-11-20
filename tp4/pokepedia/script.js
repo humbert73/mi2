@@ -1,6 +1,7 @@
 function init() {
     var pokemons = getPokemons();
 
+    initSearch();
     initMenu(pokemons);
     initIndexPokemonsArticles(pokemons);
     initPokemonsArticles(pokemons);
@@ -51,7 +52,7 @@ function initMenuPokemons(pokemons) {
 
 function removeAllDisplay() {
     var tabArticles = document.getElementById('tabArticles');
-    var pokemonArticles = document.getElementsByClassName('pokemon-article');
+    var pokemonArticles = getPokemonArticles();
 
     tabArticles.style.display = 'none';
     for (var i = 0; i < pokemonArticles.length; i++) {
@@ -79,13 +80,13 @@ function createPokemonLiForMenu(pokemon) {
     li.appendChild(a);
     li.addEventListener("click", function () {
         removeAllDisplay();
-        displayPokemonArticle(pokemon.numero);
+        displayPokemonArticleByNumero(pokemon.numero);
     });
 
     return li;
 }
 
-function displayPokemonArticle(numeroPokemon) {
+function displayPokemonArticleByNumero(numeroPokemon) {
     var pokemonArticle = document.getElementById(numeroPokemon);
     pokemonArticle.style.display = 'block';
 }
@@ -134,7 +135,7 @@ function createPokemonArticle(pokemon) {
 
     article.addEventListener("click", function () {
         removeAllDisplay();
-        displayPokemonArticle(pokemon.numero);
+        displayPokemonArticleByNumero(pokemon.numero);
     });
 
     return article;
@@ -256,7 +257,7 @@ function buildSpriteColLeft(numGeneration) {
 function buildSpriteColRight(pokemon, numGeneration) {
     var divColRight = document.createElement("div");
     var img = document.createElement("img");
-    console.log(numGeneration);
+
     divColRight.className = "col-right";
     img.src = pokemon.spritesByGeneration[numGeneration];
     divColRight.appendChild(img);
@@ -311,6 +312,72 @@ function buildCaracteristiqueColLeft(caracteristique) {
     return divColLeft;
 }
 
+function getPokemonArticles() {
+    return document.getElementsByClassName('pokemon-article');
+}
+
+
+// Fonctions liées à la recherche
+function initSearch() {
+    var buttonSearch = document.getElementById('button-search');
+    buttonSearch.addEventListener("click", function(){search()});
+}
+
+function search() {
+    var input = document.getElementById('input-search');
+    var searchText = input.value;
+    var regExp = new RegExp(searchText, 'i');
+    var articles = findArticlesWithText(searchText, regExp);
+
+    removeAllDisplay();
+    if (articles) {
+        displayArticles(articles);
+    } else {
+        displayTabArticles();
+    }
+}
+
+function findArticlesWithText(text, regExp) {
+    var pokemonArticles = getPokemonArticles();
+    var articles = [];
+
+    for (var i=0; i < pokemonArticles.length; i++) {
+        var article = pokemonArticles[i];
+
+        if (hasTextInArticle(article, text, regExp)) {
+            articles.push(article);
+        }
+    }
+
+    return articles;
+}
+
+function hasTextInArticle(article, text, regExp) {
+    var textFind = '';
+    for (var i = 0; i < article.childNodes.length; i++) {
+        var child = article.childNodes[i];
+        if (child.nodeType === Node.ELEMENT_NODE) {
+            if (hasTextInArticle(child, text, regExp)) {
+                return true;
+            }
+        } else if (child.nodeType === Node.TEXT_NODE) {
+            textFind = child.nodeValue;
+        }
+        if (textFind.search(regExp) != -1) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function displayArticles(articles) {
+    for (var i=0; i< articles.length; i++) {
+        displayPokemonArticleByNumero(articles[i].id);
+    }
+}
+
+
+// Fonction pour générer les données relatifs aux pokémons (appeler une seule fois)
 function getPokemons() {
 
     var pokemons = [
@@ -338,7 +405,7 @@ function getPokemons() {
             numero: "002",
             nom: "Herbizarre",
             image: "http://www.pokepedia.fr/images/4/44/Herbizarre-RFVF.png",
-            description: "Bulbizarre (anglais : Bulbasaur ; japonais : フシギダネ Fushigidane) est le Pokémon de départ de type Plante offert par le Professeur Chen dans la région de Kanto. Il est le premier Pokémon du Pokédex National.",
+            description: "Herbizarre (anglais : Ivysaur ; japonais : フシギソウ Fushigisou) est un Pokémon de type Plante et Poison de la première génération.",
             typePrincipal: "http://www.pokepedia.fr/images/6/66/Miniat_type_plante_6_x.png",
             caracteristiques: {
                 Famille: "Graine",

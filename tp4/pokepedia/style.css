@@ -19,6 +19,37 @@ h4 {
     padding-right: 10px;
 }
 
+/*Gestion de la barre de recherche*/
+#search {
+    display: inline-block;
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 40px;
+    width: 20%;
+    line-height: 35px;
+}
+
+#search div {
+    display: inline-block;
+    vertical-align: middle;
+    margin : auto;
+
+}
+
+#input-search {
+    width : 60%;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+}
+
+#button-search {
+    border: 2px solid cornflowerblue;
+    border-radius: 5px;
+    background-color: lightblue;
+}
+
 /*Gestion du menu*/
 #menu-fictif { /* bar blanche du menu*/
     z-index: 0;
@@ -27,7 +58,7 @@ h4 {
     position: fixed;
     background-color: white;
     width: 100%;
-    padding: 10px;
+    padding: 20px; /* la moitier de la hauteur de nav et #search */
     border-bottom: solid 1px lightgrey;
 }
 
@@ -55,7 +86,8 @@ nav div {
     text-align: center;
     border-bottom: solid 1px white;
     background-color: white;
-    margin : 0 10px 0 10px;
+    margin: 0 10px;
+    padding: 10px 0 0 0;
 }
 
 nav li:hover {
@@ -67,7 +99,7 @@ nav a {
 }
 
 .menuItem ul {
-    margin: 1px 0 0 0;
+    margin: 11px 0 0 0;
     padding-bottom: 5px;
     width: 148px; /* nav div width en comptant le border de 1px */
     display: none;
@@ -78,6 +110,8 @@ nav a {
 .menuItem:hover ul {
     display: block;
 }
+
+/*Recherche*/
 
 /*Gestion des articles et des asides*/
 section {
@@ -122,7 +156,6 @@ article, aside {
 article > header, aside > header {
     border-bottom: solid 1px lightgrey;
 }
-
 
 /*Gestion des asides qui contienne des listes d'informations*/
 .aside-list > ul {
