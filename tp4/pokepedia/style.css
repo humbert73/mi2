@@ -101,6 +101,12 @@ aside div {
     width: 300px;
 }
 
+#tabArticles a {
+    display: flex;
+    text-decoration: none;
+    color: black;
+}
+
 article, aside {
     margin: 10px;
     padding: 10px;

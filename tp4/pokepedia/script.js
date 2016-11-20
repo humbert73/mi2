@@ -4,6 +4,8 @@ function init() {
     initMenu(pokemons);
     initIndexPokemonsArticles(pokemons);
     initPokemonsArticles(pokemons);
+    removeAllDisplay();
+    displayTabArticles();
 }
 
 function initPokemonsArticles(pokemons) {
@@ -25,10 +27,13 @@ function initMenuAccueil() {
 
     linkAccueil.addEventListener("click", function () {
         removeAllDisplay();
-
-        var tabArticles = document.getElementById('tabArticles');
-        tabArticles.style.display = 'flex';
+        displayTabArticles();
     });
+}
+
+function displayTabArticles() {
+    var tabArticles = document.getElementById('tabArticles');
+    tabArticles.style.display = 'flex';
 }
 
 function initMenuPokemons(pokemons) {
@@ -55,8 +60,7 @@ function removeAllDisplay() {
 }
 
 function initPokemonArticle(pokemon) {
-
-    var article = createIndexPokemonArticle(pokemon);
+    var article = createPokemonArticle(pokemon);
     var articleSection = createArticleSection(pokemon);
 
     article.id = pokemon.numero;
@@ -74,15 +78,17 @@ function createPokemonLiForMenu(pokemon) {
     a.href = '#';
     li.appendChild(a);
     li.addEventListener("click", function () {
-        var pokemonArticle = document.getElementById(pokemon.numero);
-
         removeAllDisplay();
-        pokemonArticle.style.display = 'block';
+        displayPokemonArticle(pokemon.numero);
     });
 
     return li;
 }
 
+function displayPokemonArticle(numeroPokemon) {
+    var pokemonArticle = document.getElementById(numeroPokemon);
+    pokemonArticle.style.display = 'block';
+}
 
 function initIndexPokemonsArticles(pokemons) {
     var section = document.getElementsByTagName("section")[0];
@@ -96,6 +102,16 @@ function initIndexPokemonsArticles(pokemons) {
 }
 
 function createIndexPokemonArticle(pokemon) {
+    var linkArticle = document.createElement("a");
+    var article = createPokemonArticle(pokemon);
+
+    linkArticle.href = '#';
+    linkArticle.appendChild(article);
+
+    return linkArticle;
+}
+
+function createPokemonArticle(pokemon) {
     var article = document.createElement("article");
 
     var header = document.createElement("header");
@@ -115,6 +131,11 @@ function createIndexPokemonArticle(pokemon) {
     article.appendChild(divImage);
     article.appendChild(divType);
     article.appendChild(description);
+
+    article.addEventListener("click", function () {
+        removeAllDisplay();
+        displayPokemonArticle(pokemon.numero);
+    });
 
     return article;
 }
