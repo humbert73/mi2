@@ -191,8 +191,9 @@ function createCaracteristiqueAside(pokemon) {
     var header = document.createElement("header");
     var h2 = document.createElement("h2");
 
-    aside.className = "aside-list";
+    aside.className = "aside-list caracteristique";
     aside.id = "caracteristique";
+    aside.setAttribute("num-pokemon", pokemon.numero);
     h2.innerHTML = "Caractéristiques";
     header.appendChild(h2);
     aside.appendChild(header);
@@ -324,17 +325,128 @@ function initSearch() {
 }
 
 function search() {
+    initSearchEnums();
     var input = document.getElementById('input-search');
     var searchText = input.value;
-    var regExp = new RegExp(searchText, 'i');
-    var articles = findArticlesWithText(searchText, regExp);
+    var regExp = new RegExp(searchText.trim(), 'i');
+    var articles = [];
+
+    var type = checkKindOfSearch(searchText);
+    if (type) {
+        var searchObject = findCaracteristiqueFromSearchText(searchText, type);
+        regExp = new RegExp(searchObject.text, 'i');
+        articles = findArticlesWithCaracteristique(searchObject, regExp)
+    } else {
+        articles = findArticlesWithText(searchText, regExp);
+    }
 
     removeAllDisplay();
-    if (articles) {
+    if (articles || articles.length > 0) {
         displayArticles(articles);
     } else {
         displayTabArticles();
     }
+}
+
+function findArticlesWithCaracteristique(searchObject, regExp) {
+    var articles=[];
+    var asideCaracteristiques = document.getElementsByClassName("caracteristique");
+    for(var i=0; i < asideCaracteristiques.length; i++) {
+        var aside = asideCaracteristiques[i];
+        var listeCaracteristique = aside.children[1];
+        var li = listeCaracteristique.children[caracteristiques[searchObject.caracteristique].displayNum];
+
+        if (hasTextInLiCaracteristique(li, regExp)) {
+            console.log(aside.getAttribute('num-pokemon'));
+            var article = document.getElementById(aside.getAttribute('num-pokemon'));
+            articles.push(article);
+        }
+    }
+
+    return articles;
+}
+
+function hasTextInLiCaracteristique(li, regExp) {
+        var text = li.children[1].textContent;
+        return isContainText(text, regExp)
+}
+
+function isContainText(textFind, regExp) {
+    if (textFind.search(regExp) != -1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function initSearchEnums() {
+    typeSearch = {
+        EQUAL : {value: '='},
+        GREATER_THAN : {value: '>'},
+        LESS_THAN : {value: '<'},
+        GREATER_EQUAL : {value: '>='},
+        LESS_EQUAL : {value: '<='}
+    };
+    caracteristiques = {
+        Famille : {value: 'Famille', displayNum:'0'},
+        Taille : {value: 'Taille', displayNum:'1'},
+        Poids : {value: 'Poids', displayNum:'2'},
+        Talent : {value: 'Talent', displayNum:'3'}
+    };
+}
+
+function findCaracteristiqueFromSearchText(searchText, searchType) {
+    var splitTexts = searchText.split(searchType.value);
+    var searchCaracteristique = splitTexts[0].trim();
+    searchText = splitTexts[1].trim();
+
+    var caracteristique = isCorrectCaracteristique(searchCaracteristique)
+    if (caracteristique) {
+        var searchObject = {
+            caracteristique: caracteristique,
+            type: searchType,
+            text : searchText
+        }
+    } else {
+        return false
+    }
+
+    return searchObject;
+}
+
+function isCorrectCaracteristique(searchCaracteristique) {
+    for (var caracteristique in caracteristiques) {
+        if (caracteristique == searchCaracteristique) {
+            return caracteristique;
+        }
+    }
+
+    return false;
+}
+
+function checkKindOfSearch(searchText) {
+    var type;
+
+    if (searchText.search(typeSearch.LESS_THAN.value) != -1) {
+        if (searchText.search(typeSearch.LESS_EQUAL.value) != -1) {
+            type = typeSearch.LESS_EQUAL;
+        } else {
+            type = typeSearch.LESS_EQUAL;
+        }
+    } else if (searchText.search(typeSearch.GREATER_THAN.value) != -1) {
+        if (searchText.search(typeSearch.GREATER_EQUAL.value) != -1) {
+            type = typeSearch.GREATER_EQUAL;
+        } else {
+            type = typeSearch.GREATER_THAN;
+        }
+    } else if (searchText.search(typeSearch.EQUAL.value) != -1) {
+        type = typeSearch.EQUAL;
+    } else {
+        type = null;
+    }
+
+    return type;
 }
 
 function findArticlesWithText(text, regExp) {
