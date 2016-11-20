@@ -7,42 +7,82 @@ function init() {
 }
 
 function initPokemonsArticles(pokemons) {
-    for(num_pokemon  in pokemons) {
-        initPokemonArticle(pokemons[num_pokemon]);
+    var section = document.getElementById("pokemon-articles");
+    for (numPokemon in pokemons) {
+        var article = initPokemonArticle(pokemons[numPokemon]);
+        section.appendChild(article);
     }
 }
 
 function initMenu(pokemons) {
+    initMenuAccueil();
+    initMenuPokemons(pokemons);
+}
+
+function initMenuAccueil() {
+    var div = document.getElementById("acceuil");
+    var linkAccueil = div.firstElementChild;
+
+    linkAccueil.addEventListener("click", function () {
+        removeAllDisplay();
+
+        var tabArticles = document.getElementById('tabArticles');
+        tabArticles.style.display = 'flex';
+    });
+}
+
+function initMenuPokemons(pokemons) {
     var div = document.getElementById("pokemons");
     var ul = document.createElement("ul");
 
     for (var i = 0; i < pokemons.length; i++) {
         var pokemon = pokemons[i];
-        var li = createPokemonLiForMenu(pokemon);
+        var li = createPokemonLiForMenu(pokemon, i);
+
         ul.appendChild(li);
     }
     div.appendChild(ul);
 }
 
+function removeAllDisplay() {
+    var tabArticles = document.getElementById('tabArticles');
+    var pokemonArticles = document.getElementsByClassName('pokemon-article');
+
+    tabArticles.style.display = 'none';
+    for (var i = 0; i < pokemonArticles.length; i++) {
+        pokemonArticles[i].style.display = 'none';
+    }
+}
+
 function initPokemonArticle(pokemon) {
-    var section = document.getElementById("pokemon-articles");
+
     var article = createIndexPokemonArticle(pokemon);
     var articleSection = createArticleSection(pokemon);
+
+    article.id = pokemon.numero;
+    article.className = 'pokemon-article';
     article.appendChild(articleSection);
 
-    section.appendChild(article);
+    return article;
 }
 
 function createPokemonLiForMenu(pokemon) {
     var li = document.createElement("li");
-    // var a = document.createElement("a");
-    // a.href = encodeURI("pokemon.html?num=" + pokemon.numero);
-    // a.innerHTML = pokemon.nom;
-    // li.appendChild(a);
-    li.innerHTML = pokemon.nom;
+    var a = document.createElement("a");
+
+    a.innerHTML = pokemon.nom;
+    a.href = '#';
+    li.appendChild(a);
+    li.addEventListener("click", function () {
+        var pokemonArticle = document.getElementById(pokemon.numero);
+
+        removeAllDisplay();
+        pokemonArticle.style.display = 'block';
+    });
 
     return li;
 }
+
 
 function initIndexPokemonsArticles(pokemons) {
     var section = document.getElementsByTagName("section")[0];
@@ -50,6 +90,7 @@ function initIndexPokemonsArticles(pokemons) {
     for (var i = 0; i < pokemons.length; i++) {
         var pokemon = pokemons[i];
         var article = createIndexPokemonArticle(pokemon);
+
         section.appendChild(article);
     }
 }
@@ -67,24 +108,48 @@ function createIndexPokemonArticle(pokemon) {
     h3.innerHTML = "№ " + pokemon.numero;
     article.appendChild(h3);
 
-    var div = document.createElement("div");
-    var img = document.createElement("img");
-    img.src = pokemon.image;
-    img.width = 150;
-    div.appendChild(img);
-    article.appendChild(div);
+    var divImage = buildDivImagePokemon(pokemon.image);
+    var divType = buildDivTypePokemon(pokemon.typePrincipal);
+    var description = buildDescriptionPokemon(pokemon.description);
 
-    var div = document.createElement("div");
-    var img = document.createElement("img");
-    img.src = pokemon.typePrincipal;
-    div.appendChild(img);
-    article.appendChild(div);
-
-    var p = document.createElement("p");
-    p.innerHTML = pokemon.description;
-    article.appendChild(p);
+    article.appendChild(divImage);
+    article.appendChild(divType);
+    article.appendChild(description);
 
     return article;
+}
+
+function buildDivImagePokemon(image) {
+    var divImage = document.createElement("div");
+    var imgImage = buildImage(image);
+
+    imgImage.width = 150;
+    divImage.appendChild(imgImage);
+
+    return divImage;
+}
+
+function buildDivTypePokemon(typePrincipal) {
+    var divType = document.createElement("div");
+    var imgType = buildImage(typePrincipal);
+
+    divType.appendChild(imgType);
+
+    return divType;
+}
+
+function buildImage(srcImage) {
+    var img = document.createElement("img");
+    img.src = srcImage;
+
+    return img;
+}
+
+function buildDescriptionPokemon(description) {
+    var p = document.createElement("p");
+    p.innerHTML = description;
+
+    return p;
 }
 
 function createArticleSection(pokemon) {
@@ -100,18 +165,19 @@ function createArticleSection(pokemon) {
 
 function createCaracteristiqueAside(pokemon) {
     var aside = document.createElement("aside");
-    aside.className = "aside-list";
-    aside.id = "caracteristique";
     var ul = document.createElement("ul");
     var header = document.createElement("header");
     var h2 = document.createElement("h2");
 
+    aside.className = "aside-list";
+    aside.id = "caracteristique";
     h2.innerHTML = "Caractéristiques";
     header.appendChild(h2);
     aside.appendChild(header);
 
     for (caracteristique in pokemon['caracteristiques']) {
         var li = addCaracteristiqueLiToUl(pokemon, caracteristique);
+
         ul.appendChild(li);
     }
     aside.appendChild(ul);
@@ -128,14 +194,14 @@ function createSpritesEvolutionAside(pokemon) {
     // création du header
     var header = document.createElement("header");
     var h2 = document.createElement("h2");
-    h2.innerHTML ="Evolution des sprites tout au long des générations";
+    h2.innerHTML = "Evolution des sprites tout au long des générations";
     header.appendChild(h2);
 
     var ul = document.createElement("ul");
 
     // création des sprite pour chaque génération
-    for (var sprite in pokemon.spritesByGeneration) {
-        ul.appendChild(createSpriteLi(pokemon, sprite));
+    for (var numGeneration in pokemon.spritesByGeneration) {
+        ul.appendChild(createSpriteLi(pokemon, numGeneration));
     }
 
     aside.appendChild(ul);
@@ -143,60 +209,85 @@ function createSpritesEvolutionAside(pokemon) {
     return aside
 }
 
-function createSpriteLi(pokemon, sprite) {
-    // création de la colonne de gauche => Affichage du numéro de la génération
-    var divColLeft = document.createElement("div");
-    divColLeft.className = "col-left";
-    var h4 = document.createElement("h4");
-    h4.innerHTML = "Génération "+sprite+" :";
-    divColLeft.appendChild(h4);
-
-    // création de la colonne de droite => Affichage du sprite de la génération en cours
-    var divColRight = document.createElement("div");
-    divColRight.className = "col-right";
-    var img = document.createElement("img");
-    img.src = pokemon.spritesByGeneration[sprite];
-    divColRight.appendChild(img);
-
-    // ajout des colonnes à l'élément li
+function createSpriteLi(pokemon, numGeneration) {
     var li = document.createElement("li");
-    li.appendChild(divColLeft);
-    li.appendChild(divColRight);
+
+    var divSpriteColLeft = buildSpriteColLeft(numGeneration);
+    var divSpriteColRight = buildSpriteColRight(pokemon, numGeneration);
+
+    li.appendChild(divSpriteColLeft);
+    li.appendChild(divSpriteColRight);
 
     return li;
 }
 
-function addCaracteristiqueLiToUl(pokemon, caracteristique) {
-    var h4 = document.createElement("h4");
-    var li = document.createElement("li");
+function buildSpriteColLeft(numGeneration) {
     var divColLeft = document.createElement("div");
-    var divColRight = document.createElement("div");
+    var h4 = document.createElement("h4");
 
-    // Colonne de gauche pour un type de caractéristique
-    h4.innerHTML = caracteristique+" :";
     divColLeft.className = "col-left";
+    h4.innerHTML = "Génération " + numGeneration + " :";
     divColLeft.appendChild(h4);
 
-    // Colonne de droite pour un type de caractéristique
+    return divColLeft;
+}
+
+function buildSpriteColRight(pokemon, numGeneration) {
+    var divColRight = document.createElement("div");
+    var img = document.createElement("img");
+    console.log(numGeneration);
+    divColRight.className = "col-right";
+    img.src = pokemon.spritesByGeneration[numGeneration];
+    divColRight.appendChild(img);
+
+    return divColRight;
+}
+
+function addCaracteristiqueLiToUl(pokemon, caracteristique) {
+
+    var li = document.createElement("li");
+    var divCaracteristiqueColLeft = buildCaracteristiqueColLeft(caracteristique);
+    var divCaracteristiqueColRight = buildCaracteristiqueColRight(pokemon, caracteristique);
+
+    li.appendChild(divCaracteristiqueColLeft);
+    li.appendChild(divCaracteristiqueColRight);
+
+    return li;
+}
+
+function buildCaracteristiqueColRight(pokemon, caracteristique) {
+    var divColRight = document.createElement("div");
+
     divColRight.className = "col-right";
     if (Array.isArray(pokemon.caracteristiques[caracteristique])) { // Ajout d'une liste si la caractéristique contient plus de deux élément
         var ul = document.createElement("li");
+
         for (element in pokemon.caracteristiques[caracteristique]) {
             var li_caracteristique = document.createElement("li");
+
             li_caracteristique.innerHTML = pokemon.caracteristiques[caracteristique][element];
             ul.appendChild(li_caracteristique);
         }
         divColRight.appendChild(ul);
     } else { // Ajout d'un seul élément.
-        var li_caracteristique = document.createElement("li");
-        li_caracteristique.innerHTML = pokemon.caracteristiques[caracteristique];
-        divColRight.appendChild(li_caracteristique);
+        var li_simple_caracteristique = document.createElement("li");
+
+        li_simple_caracteristique.innerHTML = pokemon.caracteristiques[caracteristique];
+        divColRight.appendChild(li_simple_caracteristique);
     }
 
-    li.appendChild(divColLeft);
-    li.appendChild(divColRight);
+    return divColRight;
+}
 
-    return li;
+function buildCaracteristiqueColLeft(caracteristique) {
+    var divColLeft = document.createElement("div");
+    var h4 = document.createElement("h4");
+
+    h4.innerHTML = caracteristique + " :";
+    divColLeft.className = "col-left";
+    divColLeft.appendChild(h4);
+
+    return divColLeft;
 }
 
 function getPokemons() {
@@ -222,7 +313,7 @@ function getPokemons() {
                 5: "http://www.pokepedia.fr/images/2/20/Sprite_5_n_001.png",
                 6: "http://www.pokepedia.fr/images/c/c2/Sprite_6_x_001.png"
             }
-        },{
+        }, {
             numero: "002",
             nom: "Herbizarre",
             image: "http://www.pokepedia.fr/images/4/44/Herbizarre-RFVF.png",
@@ -242,7 +333,7 @@ function getPokemons() {
                 5: "http://www.pokepedia.fr/images/2/20/Sprite_5_n_001.png",
                 6: "http://www.pokepedia.fr/images/c/c2/Sprite_6_x_001.png"
             }
-        },{
+        }, {
             numero: "003",
             nom: "Florizarre",
             image: "http://www.pokepedia.fr/images/4/42/Florizarre-RFVF.png",
@@ -262,7 +353,7 @@ function getPokemons() {
                 5: "http://www.pokepedia.fr/images/2/20/Sprite_5_n_001.png",
                 6: "http://www.pokepedia.fr/images/c/c2/Sprite_6_x_001.png"
             }
-        },{
+        }, {
             numero: "004",
             nom: "Salamèche",
             image: "http://cdn.bulbagarden.net/upload/7/73/004Charmander.png",
