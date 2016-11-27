@@ -51,6 +51,31 @@ h4 {
     background-color: lightblue;
 }
 
+/*Pop Over*/
+.popover#help {
+    display: none;
+    float: left;
+    font-size: 12px;
+    background-color: dimgrey;
+    color: white;
+    padding: 10px;
+    width: 150px;
+    height: 120px;
+    border-radius: 5px;
+}
+.popover li {
+    margin: 0;
+    padding: 0;
+    height: 12px;
+}
+.popover ul {
+    margin: 0;
+    padding-left: 20px;
+}
+.popover p {
+    margin: 0;
+}
+
 /*Gestion du menu*/
 #menu-fictif { /* bar blanche du menu*/
     z-index: 0;

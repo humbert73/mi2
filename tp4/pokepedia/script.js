@@ -322,6 +322,20 @@ function getPokemonArticles() {
 function initSearch() {
     var buttonSearch = document.getElementById('button-search');
     buttonSearch.addEventListener("click", function(){search()});
+    initSearchHelp();
+
+}
+
+function initSearchHelp() {
+    var inputSearch = document.getElementById('input-search');
+    inputSearch.addEventListener("mouseover", function () {
+        var helpInfo = document.getElementById('help');
+        helpInfo.style.display = "block";
+    });
+    inputSearch.addEventListener("mouseout", function () {
+        var helpInfo = document.getElementById('help');
+        helpInfo.style.display = "none";
+    });
 }
 
 function search() {
@@ -334,6 +348,7 @@ function search() {
     var type = checkKindOfSearch(searchText);
     if (type) {
         var searchObject = findCaracteristiqueFromSearchText(searchText, type);
+        console.log(searchObject);
         regExp = new RegExp(searchObject.text, 'i');
         articles = findArticlesWithCaracteristique(searchObject, regExp)
     } else {
@@ -356,10 +371,17 @@ function findArticlesWithCaracteristique(searchObject, regExp) {
         var listeCaracteristique = aside.children[1];
         var li = listeCaracteristique.children[caracteristiques[searchObject.caracteristique].displayNum];
 
-        if (hasTextInLiCaracteristique(li, regExp)) {
-            console.log(aside.getAttribute('num-pokemon'));
-            var article = document.getElementById(aside.getAttribute('num-pokemon'));
-            articles.push(article);
+        if (isNumericCaracteristique(searchObject.caracteristique)) {
+            console.log(hasCorrespondingValueInLiCaracteristique(li, searchObject));
+            if (hasCorrespondingValueInLiCaracteristique(li, searchObject)) {
+                var article = document.getElementById(aside.getAttribute('num-pokemon'));
+                articles.push(article);
+            }
+        } else {
+            if (hasTextInLiCaracteristique(li, regExp)) {
+                var article = document.getElementById(aside.getAttribute('num-pokemon'));
+                articles.push(article);
+            }
         }
     }
 
@@ -367,8 +389,14 @@ function findArticlesWithCaracteristique(searchObject, regExp) {
 }
 
 function hasTextInLiCaracteristique(li, regExp) {
-        var text = li.children[1].textContent;
-        return isContainText(text, regExp)
+    var text = li.children[1].textContent;
+    return isContainText(text, regExp);
+}
+
+function hasCorrespondingValueInLiCaracteristique(li, searchObject) {
+    var text = li.children[1].textContent;
+    console.log(isContainValue(text, searchObject));
+    return isContainValue(text, searchObject);
 }
 
 function isContainText(textFind, regExp) {
@@ -376,6 +404,36 @@ function isContainText(textFind, regExp) {
         return true;
     } else {
         return false;
+    }
+}
+
+function isContainValue(textFind, searchObject) {
+    if (searchObject.caracteristique == caracteristiques.poids) {
+        textFind = textFind.substr(0, textFind.length-1);
+    } else {
+        textFind = textFind.substr(0, textFind.length-2);
+    }
+    var floatFind = parseFloat(textFind);
+    var floatSearch = parseFloat(searchObject.text);
+
+    switch(searchObject.type) {
+        case typeSearch.GREATER_EQUAL:
+            return floatFind >= floatSearch;
+            break;
+        case typeSearch.GREATER_THAN:
+            return floatFind > floatSearch;
+            break;
+        case typeSearch.LESS_EQUAL:
+            return floatFind <= floatSearch;
+            break;
+        case typeSearch.LESS_THAN:
+            return floatFind < floatSearch;
+            break;
+        case typeSearch.EQUAL:
+            return floatFind == floatSearch;
+            break;
+        default:
+            return false
     }
 }
 
@@ -389,22 +447,22 @@ function initSearchEnums() {
         LESS_EQUAL : {value: '<='}
     };
     caracteristiques = {
-        Famille : {value: 'Famille', displayNum:'0'},
-        Taille : {value: 'Taille', displayNum:'1'},
-        Poids : {value: 'Poids', displayNum:'2'},
-        Talent : {value: 'Talent', displayNum:'3'}
+        famille : {value: 'famille', displayNum:'0'},
+        taille : {value: 'taille', displayNum:'1'},
+        poids : {value: 'poids', displayNum:'2'},
+        talent : {value: 'talent', displayNum:'3'}
     };
 }
 
 function findCaracteristiqueFromSearchText(searchText, searchType) {
+    console.log(searchType);
     var splitTexts = searchText.split(searchType.value);
     var searchCaracteristique = splitTexts[0].trim();
     searchText = splitTexts[1].trim();
 
-    var caracteristique = isCorrectCaracteristique(searchCaracteristique)
-    if (caracteristique) {
+    if (isCorrectCaracteristique(searchCaracteristique)) {
         var searchObject = {
-            caracteristique: caracteristique,
+            caracteristique: searchCaracteristique,
             type: searchType,
             text : searchText
         }
@@ -415,9 +473,29 @@ function findCaracteristiqueFromSearchText(searchText, searchType) {
     return searchObject;
 }
 
-function isCorrectCaracteristique(searchCaracteristique) {
+function isCorrectCaracteristique(searchCaracteristique, searchType) {
+    var caracteristique = isCaracteristique(searchCaracteristique);
+    if (caracteristique) {
+        if (! isNumericCaracteristique(caracteristique)) {
+            if (searchType == typeSearch.EQUAL) {
+                return false;
+            }
+        }
+    } else {
+        return false;
+    }
+
+    return caracteristique;
+}
+
+function isNumericCaracteristique(caracteristique) {
+    return caracteristique.trim().toLowerCase() == caracteristiques.taille.value
+        || caracteristique.trim().toLowerCase() == caracteristiques.poids.value;
+}
+
+function isCaracteristique(searchCaracteristique) {
     for (var caracteristique in caracteristiques) {
-        if (caracteristique == searchCaracteristique) {
+        if (caracteristique.toLowerCase() == searchCaracteristique.trim().toLowerCase()) {
             return caracteristique;
         }
     }
@@ -428,11 +506,12 @@ function isCorrectCaracteristique(searchCaracteristique) {
 function checkKindOfSearch(searchText) {
     var type;
 
+
     if (searchText.search(typeSearch.LESS_THAN.value) != -1) {
         if (searchText.search(typeSearch.LESS_EQUAL.value) != -1) {
             type = typeSearch.LESS_EQUAL;
         } else {
-            type = typeSearch.LESS_EQUAL;
+            type = typeSearch.LESS_THAN;
         }
     } else if (searchText.search(typeSearch.GREATER_THAN.value) != -1) {
         if (searchText.search(typeSearch.GREATER_EQUAL.value) != -1) {
@@ -521,8 +600,8 @@ function getPokemons() {
             typePrincipal: "http://www.pokepedia.fr/images/6/66/Miniat_type_plante_6_x.png",
             caracteristiques: {
                 Famille: "Graine",
-                Taille: "0.7m",
-                Poids: "6.9kg",
+                Taille: "1.0m",
+                Poids: "13.0kg",
                 Talents: ["Engrais", "Chlorophylle"]
             },
             spritesByGeneration: {
@@ -541,8 +620,8 @@ function getPokemons() {
             typePrincipal: "http://www.pokepedia.fr/images/6/66/Miniat_type_plante_6_x.png",
             caracteristiques: {
                 Famille: "Graine",
-                Taille: "0.7m",
-                Poids: "6.9kg",
+                Taille: "2.0m",
+                Poids: "100.0kg",
                 Talents: ["Engrais", "Chlorophylle"]
             },
             spritesByGeneration: {
